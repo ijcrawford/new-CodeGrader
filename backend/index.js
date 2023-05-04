@@ -1,13 +1,11 @@
-import './index.css';
-
 const PORT = 4001;
 var express = require('express');
 var path = require('path');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
+//var logger = require('morgan');
+//var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
+//var index = require('./routes/index');
 var professorRouter = require('./routes/professor');
 var studentRouter = require('./routes/student');
 
