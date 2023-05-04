@@ -108,7 +108,8 @@ studentRouter.route("/:studentId/courses/:courseId")
     }
 })
 
-studentRouter.post("/:studentId/courses/:courseID/assignment/:assignmentId/submissions", (req, res) => {
+studentRouter.route("/:studentId/courses/:courseID/assignments/:assignmentId/submissions")
+.post(async (req, res) => {
     try {
         const assignmentId = req.params.assignmentId;
         const submissions = Assignment.findById(assignmentId).submission;
@@ -124,9 +125,10 @@ studentRouter.post("/:studentId/courses/:courseID/assignment/:assignmentId/submi
     } catch (err) {
         res.status(500).json(err);
     }
-});
-
-studentRouter.get("/:studentId/courses/:courseID/assignment/:assignmentId/submissions/:studentId", (req, res) => {
+})
+//get/update specific submission (merge with above?)
+//studentRouter.route("/:studentId/courses/:courseID/assignment/:assignmentId/submissions/:studentId")
+.get(async (req, res) => {
     const assignmentId = req.params.assignmentId;
     const studentId = req.params.studentId;
     try {
@@ -140,10 +142,8 @@ studentRouter.get("/:studentId/courses/:courseID/assignment/:assignmentId/submis
     } catch (err) {
         res.status(500).json(err);
     }
-});
-
-//update specific submission
-studentRouter.put("/:studentId/courses/:courseID/assignment/:assignmentId/submissions/:studentId", (req, res) => {
+})
+.put(async (req, res) => {
     const assignmentId = req.params.assignmentId;
     const studentId = req.params.studentId;
     try {
@@ -160,7 +160,8 @@ studentRouter.put("/:studentId/courses/:courseID/assignment/:assignmentId/submis
 });
 
 //get test case output for assignment
-studentRouter.get("/:studentId/courses/:courseID/assignment/:assignmentId/submissions/:studentId/testCaseOutput", (req, res) => {
+studentRouter.route("/:studentId/courses/:courseID/assignments/:assignmentId/submissions/:studentId/testCaseOutput")
+.get(async (req, res) => {
     const assignmentId = req.params.assignmentId;
     const studentId = req.params.studentId;
     try {
@@ -177,7 +178,8 @@ studentRouter.get("/:studentId/courses/:courseID/assignment/:assignmentId/submis
 });
 
 //get due date
-studentRouter.get("/:studentId/courses/:courseID/assignment/:assignmentId/dueDate", (req, res) => {
+studentRouter.route("/:studentId/courses/:courseID/assignments/:assignmentId/dueDate")
+.get(async (req, res) => {
     const assignmentId = req.params.assignmentId;
 
     try {
