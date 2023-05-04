@@ -1,7 +1,7 @@
 const express = require('express');
 const studentRouter = express.Router();
-const student = require("../models/student");
-const Course = require("../models/class");
+const Student = require("../models/student");
+const Course = require("../models/course");
 const Assignment = require("../models/assignment");
 const Verify = require("./verify");
 const passport = require("passport");
@@ -12,7 +12,7 @@ studentRouter.route('/')
     console.log("Creating a new account...");
     console.log(req.body);
 
-    await student.register(new student({
+    await Student.register(new Student({
         email: req.body.email,
         firstName: req.body.firstName,
         lastName: req.body.lastName}), 
@@ -34,7 +34,7 @@ studentRouter.route('/login')
 .post(passport.authenticate("local"), async (req, res) => {
     try {    
         console.log("Logging in...")
-        await student.findOne({email: req.body.email})
+        await Student.findOne({email: req.body.email})
         .then((student) => {
             const token = Verify.getToken(student);
             return res.status(200).send(token);
@@ -45,23 +45,24 @@ studentRouter.route('/login')
     }
 });
 
-//Delete/Update a student account
+//Delete a student account
 studentRouter.route("/:studentId")
 .delete( async (req, res) => {
     console.log("Deleting student account " + req.params.studentId);
     try {
-        await student.deleteOne({studentID: req.params.studentId})
-        console.log("Student " + req.params.studentID + " deleted.")
+        await Student.deleteOne({studentId: req.params.studentId})
+        console.log("Student " + req.params.studentId + " deleted.")
         return res.status(200);
     } catch(err) {
         console.log("Deletion failed.");
         return res.status(500).json(err);
     }
-})
-.put( async (req, res) => {
+});
+//Update a student account
+studentRouter.put( async (req, res) => {
     console.log("Updating student account " + req.params.studentId);
     try {
-        await student.findOne({email: req.body.email})
+        await Student.findOne({email: req.body.email})
         .then((student) => {
             if(req.body.email != null) { student.email = req.body.email }
             if(req.body.firstName != null) { student.firstName = req.body.firstName }
@@ -74,11 +75,11 @@ studentRouter.route("/:studentId")
     }
 });
 
-//Get all student's courses/Add student to course
-studentRouter.route("/:studentId/courses")
+//Get all student's courses
+studentRouter.route("/:studentId/course")
 .get( async (req, res) => {
     console.log("Getting all courses...");
-    const courses = student.course;
+    const courses = Student.course;
     
     try {    
 
@@ -91,10 +92,10 @@ studentRouter.route("/:studentId/courses")
 })
 
 //Get specific course
-studentRouter.route("/:studentId/courses/:courseId")
+studentRouter.route("/:studentId/course/:courseId")
 .get( async (req, res) => {
     console.log("Getting course with ID: " + req.params.courseId)
-    const courses = student.course;
+    const courses = Student.course;
     const courseId = req.params.courseId;
     
     try {    
@@ -106,7 +107,7 @@ studentRouter.route("/:studentId/courses/:courseId")
         console.log(err);
         res.status(500).json(err);
     }
-})
+});
 
 studentRouter.route("/:studentId/courses/:courseID/assignments/:assignmentId/submissions")
 .post(async (req, res) => {
@@ -148,8 +149,9 @@ studentRouter.route("/:studentId/courses/:courseID/assignments/:assignmentId/sub
     const studentId = req.params.studentId;
     try {
         const assignment = Assignment.findById(assignmentId);
+        const submissions = assignment.submission;
 
-        submission.findByIdAndUpdate(studentId, 
+        const submission = submissions.findByIdAndUpdate(studentId, 
             {grade: grade}).then((course) => {
                 res.status(200).json(course);
             });
@@ -186,6 +188,29 @@ studentRouter.route("/:studentId/courses/:courseID/assignments/:assignmentId/due
         const assignment = Assignment.findById(assignmentId);
 
         res.status(200).send(assignment.dueDate);
+
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+// Logout
+studentRouter.post("/logout", async (req, res) => {
+    req.logout(function(err) {
+        if (err) {
+            return next(err);
+        }
+    });
+    res.send({message: "Successfully logged out"});
+});
+
+// Get User by UserId
+studentRouter.get("/get-user/:studentId", async (req, res) => {
+    try {
+        const studentId = req.params.studentId;
+        Student.findById(studentId).then((student) => {
+            res.status(200).send(student);
+        });
 
     } catch (err) {
         res.status(500).json(err);

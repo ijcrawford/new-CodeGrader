@@ -1,7 +1,9 @@
 const express = require('express');
 const professorRouter = express.Router();
-const professor = require("../models/professor");
+const Professor = require("../models/professor");
 const Assignment = require("../models/assignment");
+const Course = require("../models/course");
+const Student = require("../models/student");
 const Verify = require("./verify");
 const passport = require("passport");
 
@@ -11,7 +13,7 @@ professorRouter.route('/')
     console.log("Creating a new account...");
     console.log(req.body);
 
-    await professor.register(new professor({
+    await Professor.register(new Professor({
         email: req.body.email,
         firstName: req.body.firstName,
         lastName: req.body.lastName}), 
@@ -254,7 +256,7 @@ professorRouter.route("/:professorId/courses/:courseId/grades/:studentId")
   const courseId = req.params.courseId;
   const studentId = req.params.studentId;
   try {
-      const course = Class.findById(courseId);
+      const course = Course.findById(courseId);
       const assignments = course.assignments;
       assignments.forEach((assignment, index) => {
         const submissions = assignment.submission;
@@ -315,6 +317,20 @@ professorRouter.route("/:professorId/courses/:courseId/assignments/:assignmentId
             {feedback: feedback}).then((course) => {
                 res.status(200).json(course);
             });
+
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+
+// Get User by UserId
+professorRouter.get("/get-user/:studentId", async (req, res) => {
+    try {
+        const studentId = req.params.studentId;
+        Student.findById(studentId).then((student) => {
+            res.status(200).send(student);
+        });
 
     } catch (err) {
         res.status(500).json(err);

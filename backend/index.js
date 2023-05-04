@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 //var index = require('./routes/index');
 var professorRouter = require('./routes/professor');
 var studentRouter = require('./routes/student');
+var router = require('./routes/users');
 
 var mongoose = require('mongoose');
 
@@ -29,6 +30,7 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended:true, parameterLimit: 100
 
 app.use("/student", studentRouter);
 app.use("/professor", professorRouter);
+app.use("/users", router);
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
