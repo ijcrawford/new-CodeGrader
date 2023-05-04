@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 
 const assignmentSchema = new mongoose.Schema({
-    name: {type: String, required: true},
-    dueDate: {type: Date, required: true},
-    assignmentContent: {type: String, required: true},
-    testCase: {type: File, required: true},
+    assignmentContent: {
+        title: {type: String, required: true},
+        dueDate: {type: Date, required: true},
+        testCase: {type: File, required: true},
+    },
+    
     submission:[{
         studentId: {type: mongoose.Schema.Types.studentId},
         testCaseOutput: {type: String, required: true},
