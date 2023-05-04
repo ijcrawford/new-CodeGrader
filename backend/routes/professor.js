@@ -110,7 +110,8 @@ professorRouter.route("/:professorId/courses/:courseId")
 })
 
 //create a course
-professorRouter.post("/:professorId/course", (req, res) => {
+professorRouter.route("/:professorId/courses")
+.post(async (req, res) => {
     try {
         const course = Class.push({
             name: req.body.name,
@@ -128,7 +129,8 @@ professorRouter.post("/:professorId/course", (req, res) => {
 });
 
 //update a course
-professorRouter.put("/:professorId/course/:courseId", (req, res) => {
+professorRouter.route("/:professorId/courses/:courseId")
+.put(async (req, res) => {
     const courseId = req.params.courseId;
     console.log(`Updating course: ${courseId}`);
     
@@ -147,10 +149,11 @@ professorRouter.put("/:professorId/course/:courseId", (req, res) => {
         console.log(err);
         res.status(500).json(err);
     }
-});
+})
 
 //delete a course
-professorRouter.delete("/:professorId/course/:courseId", (req, res) => {
+//professorRouter
+.delete(async (req, res) => {
     const courseId = req.params.courseId;
     try {
         const course = Class.findByIdAndRemove(courseId);
@@ -161,7 +164,8 @@ professorRouter.delete("/:professorId/course/:courseId", (req, res) => {
 });
 
 //create a new assignment
-professorRouter.post("/:professorId/course/:courseId/assignments", (req, res) => {
+professorRouter.route("/:professorId/courses/:courseId/assignments")
+.post(async (req, res) => {
     const courseId = req.params.courseId;
     try {
         const course = Class.findById(courseId);
@@ -181,7 +185,8 @@ professorRouter.post("/:professorId/course/:courseId/assignments", (req, res) =>
 });
 
 //get an assignment
-professorRouter.get("/:professorId/course/:courseId/assignments/:assignmentId", (req, res) => {
+professorRouter.route("/:professorId/courses/:courseId/assignments/:assignmentId")
+.get(async (req, res) => {
     const courseId = req.params.courseId;
     try {
         const course = Class.findById(courseId);
@@ -192,10 +197,10 @@ professorRouter.get("/:professorId/course/:courseId/assignments/:assignmentId", 
     } catch (err) {
         res.status(500).json(err);
     }
-});
-
+})
 //update an assignment
-professorRouter.put("/:professorId/course/:courseId/assignments/:assignmentId", (req, res) => {
+//professorRouter
+.put( (req, res) => {
     const courseId = req.params.courseId;
     const assignmentId = req.params.assignmentId;
     console.log(`Updating assignment: ${assignmentId}`);
@@ -218,7 +223,8 @@ professorRouter.put("/:professorId/course/:courseId/assignments/:assignmentId", 
 });
 
 //get all course grades
-professorRouter.get("/:professorId/course/:courseId/grades", (req, res) => {
+professorRouter.route("/:professorId/courses/:courseId/grades")
+.get(async (req, res) => {
     var studentAverages = [];
     var studentGrades = [];
     const courseId = req.params.courseId;
@@ -244,7 +250,8 @@ professorRouter.get("/:professorId/course/:courseId/grades", (req, res) => {
 });
 
 //get a students course grade
-professorRouter.get("/:professorId/course/:courseId/grades/:studentId", (req, res) => {
+professorRouter.route("/:professorId/courses/:courseId/grades/:studentId")
+.get(async (req, res) => {
   var studentGrades = [];
   const courseId = req.params.courseId;
   const studentId = req.params.studentId;
@@ -266,7 +273,8 @@ professorRouter.get("/:professorId/course/:courseId/grades/:studentId", (req, re
 });
 
 //get all submissions for an assignment
-professorRouter.get("/:professorId/course/:courseId/assignment/:assignmentId/submissions", (req, res) => {
+professorRouter.route("/:professorId/courses/:courseId/assignments/:assignmentId/submissions")
+.get(async (req, res) => {
     const assignmentId = req.params.assignmentId;
     try {
         const assignment = Assignment.findById(assignmentId);
@@ -280,7 +288,8 @@ professorRouter.get("/:professorId/course/:courseId/assignment/:assignmentId/sub
 });
 
 //get specific submission
-professorRouter.get("/:professorId/course/:courseId/assignment/:assignmentId/submissions/:studentId", (req, res) => {
+professorRouter.route("/:professorId/courses/:courseId/assignments/:assignmentId/submissions/:studentId")
+.get(async (req, res) => {
     const assignmentId = req.params.assignmentId;
     const studentId = req.params.studentId;
     try {
@@ -297,7 +306,8 @@ professorRouter.get("/:professorId/course/:courseId/assignment/:assignmentId/sub
 });
 
 //update feedback on submission
-professorRouter.put("/:professorId/course/:courseId/assignment/:assignmentId/submissions/:studentId/feedback", (req, res) => {
+professorRouter.route("/:professorId/courses/:courseId/assignments/:assignmentId/submissions/:studentId/feedback")
+.put(async (req, res) => {
     const assignmentId = req.params.assignmentId;
     const studentId = req.params.studentId;
     try {
