@@ -1,10 +1,12 @@
 const PORT = 4001;
 var express = require('express');
 var path = require('path');
+const session = require("express-session");
 //var logger = require('morgan');
 //var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+const passport = require("passport");
+const cors = require("cors");
 //var index = require('./routes/index');
 var professorRouter = require('./routes/professor');
 var studentRouter = require('./routes/student');
@@ -23,6 +25,25 @@ db.once('open',function(){
 });
 
 var app = express();
+app.use(cors());
+
+const corsOptions ={
+  origin:'http://localhost:4001', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
+app.use(session({
+  secret: process.env.SECRET,
+  resave: true,
+  saveUninitialized: true
+}));
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 app.use(bodyParser.json({limit: '50mb', extended: true}));
 

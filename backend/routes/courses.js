@@ -62,12 +62,16 @@ router.put("submit-course", async(req,res) => {
         const professorId = req.body.professorId;
 
         const newCourse = new Course({
-            name: req.body.name,
-            beginningDate: req.body.beginningDate,
-            endingDate: req.body.endingDate,
+            constContent:{
+               name: req.body.name,
+               beginningDate: req.body.beginningDate,
+               endingDate: req.body.endingDate,
+               assignments:[]
+            },
+            
             professorId: professorId,
             studentIds:[],
-            assignments:[]
+           
         });
         const savedCourse = await newCourse.save();
         res.status(200).send(savedCourse);

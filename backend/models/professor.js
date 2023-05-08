@@ -5,7 +5,7 @@ const professorSchema = new mongoose.Schema({
     email: {type: String, required: true},
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
-    class: {type: [mongoose.Collection.class], required:true}
+    course: {type: [mongoose.Schema.Types.ObjectId], required:true}
 });
 
 professorSchema.plugin(passportLocalMongoose, {usernameField: "email"});
