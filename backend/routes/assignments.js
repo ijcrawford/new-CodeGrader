@@ -40,21 +40,36 @@ router.get("/get-assignment/:assignmentId", async (req,res) => {
 });
 
 //Create New Assignment
-router.post("course/:courseId/create-assignment", (req, res) => {
+router.post("/:courseId/create-assignment", async (req, res) => {
     
     try {
+        console.log("making assignment");
         const courseId = req.params.courseId;
-        const course = Course.findById(courseId);
-        const assignment = Course.assignments.push({
+        const newAssignment = new Assignment({
             assignmentContent: {
-                name: req.body.name,
+                title: req.body.title,
                 dueDate: req.body.dueDate,
-                testCase: req.body.testCase,
+                testCase: req.body.testCase
             },
             submissions: []
         });
+        const course = await Course.findByIdAndUpdate(courseId, {$push: {assignments: newAssignment.assignmentContent}},{returnDocument: 'after'}).then((result) => {
+            console.log(result)});
 
-        res.status(200).send(assignment);
+        /*console.log("course found: " + course.data.courseContent.name + ":" + courseId);
+        const newAssignment = new Assignment({
+            assignmentContent: {
+                title: req.body.title,
+                dueDate: req.body.dueDate,
+                testCase: req.body.testCase
+            },
+            submissions: []
+        });
+        console.log("assignment made");
+        const assignment = course.courseContent.assignments.push(newAssignment);*/
+        console.log("assignment pushed");
+
+        res.status(200).send(course);
 
     } catch (err) {
         res.status(500).json(err);
@@ -98,7 +113,7 @@ router.get("/:assignmentId/view-assignment", async (req, res) => {
     }
 });
 
-
+module.exports = router;
 
 
 
