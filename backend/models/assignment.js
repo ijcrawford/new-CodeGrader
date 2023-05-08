@@ -8,9 +8,9 @@ const assignmentSchema = new mongoose.Schema({
         testCase: {type: String, required: true},
     },
     submission:[{
-        studentId: {type: mongoose.Schema.Types.UUID},
-        testCaseOutput: {type: String, required: true},
-        grade: {type: Number, required: true},
+        studentId: {type: mongoose.Schema.Types.ObjectId, required: false},
+        testCaseOutput: {type: String, required: false},
+        grade: {type: Number, required: false},
         feedback: {type: String, required: false}
     }]
 });

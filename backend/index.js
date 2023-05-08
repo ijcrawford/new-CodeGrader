@@ -10,6 +10,8 @@ const cors = require("cors");
 //var index = require('./routes/index');
 var professorRouter = require('./routes/professor');
 var studentRouter = require('./routes/student');
+var courseRouter = require ('./routes/courses');
+var assignmentRouter = require('./routes/assignments');
 var router = require('./routes/users');
 
 var mongoose = require('mongoose');
@@ -51,6 +53,8 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended:true, parameterLimit: 100
 
 app.use("/student", studentRouter);
 app.use("/professor", professorRouter);
+app.use("/courses", courseRouter);
+app.use("/assignments", assignmentRouter);
 app.use("/users", router);
 
 app.listen(PORT, () => {

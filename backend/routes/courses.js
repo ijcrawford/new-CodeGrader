@@ -56,11 +56,12 @@ router.get("/get-course/:courseId", async (req,res) => {
 });
 
 //Create New Course
-router.put("submit-course", async(req,res) => {
+router.post("/submit-course", async(req,res) => {
     try{
-        const courseId = req.body.courseId;
+        console.log("creating course");
+        //const courseId = req.body.courseId;
         const professorId = req.body.professorId;
-
+        console.log("new course:");
         const newCourse = new Course({
             constContent:{
                name: req.body.name,
@@ -72,11 +73,23 @@ router.put("submit-course", async(req,res) => {
             professorId: professorId,
             studentIds:[],
            
+            courseContent: {
+            name: req.body.name,
+            beginningDate: req.body.beginningDate,
+            endingDate: req.body.endingDate,
+            assignments:[]
+            },
+            professorId: professorId,
+            studentIds:req.body.studentIds
+            
         });
+        console.log("new course assembled");
         const savedCourse = await newCourse.save();
+        console.log("new course saved")
         res.status(200).send(savedCourse);
 
     }catch(err){
+        console.log("no dice");
         res.status(500).json(err);
     }
 });
@@ -95,7 +108,7 @@ router.put("/:courseId/edit-course", async (req, res) => {
 });
 
 //Delete a Course by CourseId
-professorRouter.delete("/:courseId", (req, res) => {
+router.delete("/:courseId", (req, res) => {
     try {
         const courseId = req.params.courseId;
         const course = Course.findByIdAndRemove(courseId);
@@ -137,6 +150,6 @@ router.put("/add-students/:courseId", async (req, res) => {
     }
 })
 
-
+module.exports = router;
 
 

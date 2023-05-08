@@ -7,7 +7,7 @@ const Student = require("../models/student");
 const Verify = require("./verify");
 const passport = require("passport");
 
-//Create professor account
+//Create professor account - GOOD
 professorRouter.route('/')
 .post( async (req,res) => {
     console.log("Creating a new account...");
@@ -35,7 +35,7 @@ professorRouter.route('/login')
 .post(passport.authenticate("local"), async (req, res) => {
     try {    
         console.log("Logging in...")
-        await professor.findOne({email: req.body.email})
+        await Professor.findOne({email: req.body.email})
         .then((professor) => {
             const token = Verify.getToken(professor);
             return res.status(200).send(token);
@@ -46,29 +46,38 @@ professorRouter.route('/login')
     }
 });
 
-//Delete/Update a professor account
+//Delete/Update a professor account - NEEDS FIXING
 professorRouter.route("/:professorId")
 .delete( async (req, res) => {
     console.log("Deleting professor account " + req.params.professorId);
     try {
-        await professor.deleteOne({professorId: req.params.professorId})
-        console.log("professor " + req.params.professorId + " deleted.")
-        return res.status(200);
+        const prof = await Professor.findByIdAndRemove(req.params.professorId);
+        //console.log("professor " + req.params.professorId + " deleted.")
+        res.status(200).send(`Deleted professor with id ${req.params.professorId}`);
     } catch(err) {
         console.log("Deletion failed.");
         return res.status(500).json(err);
     }
 })
-.put( async (req, res) => {
+.put( async (req, res) => { //GOOD
     console.log("Updating professor account " + req.params.professorId);
     try {
-        await professor.findOne({email: req.body.email})
-        .then((professor) => {
+        const professor = await Professor.findByIdAndUpdate(req.params.professorId, {
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            password: req.body.password
+        });
+        console.log("successful update for professor with id " + req.params.professorId);
+        res.status(200).send(professor);
+        /*.then((professor) => {
             if(req.body.email != null) { professor.email = req.body.email }
             if(req.body.firstName != null) { professor.firstName = req.body.firstName }
             if(req.body.lastName != null) { professor.lastName = req.body.lastName }
             if(req.body.password != null) { professor.password = req.body.password }
-        })
+            console.log("successful update");
+            res.status(200).json(professor);
+        });*/
     } catch(err) {
         console.log("Update failed.");
         return res.status(500).json(err);
@@ -113,13 +122,14 @@ professorRouter.route("/:professorId/courses/:courseId")
 professorRouter.route("/:professorId/courses")
 .post(async (req, res) => {
     try {
-        const course = Class.push({
+        const course = await Class.register(new Class({
             name: req.body.name,
-            beginDate: req.body.beginDate,
-            endDate: req.body.endDate,
+            beginningDate: req.body.beginDate,
+            endingDate: req.body.endDate,
+            assignedProfessor: req.params.professorId,
             students: req.body.students,
             assignments: []
-        });
+        }));
 
         res.status(200).send(course);
 
