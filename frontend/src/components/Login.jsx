@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import TextField from "@mui/material/TextField";
-import Button from 'react-bootstrap/Button';
+import TextField from "@material-ui/core/TextField";
+import Card from 'react-bootstrap/Card';
 import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 import { loginUser } from '../services/authServices';
@@ -40,51 +40,59 @@ function Login() {
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
 
-  useEffect(() => { document.body.style.backgroundColor = '#66c1db' }, [])
+    useEffect(() => { document.body.style.backgroundColor = '#528AAE' }, [])
+    const [isHover, setIsHover] = useState(false);
+    const handleMouseEnter = () => {
+      setIsHover(true);
+    };
+    const handleMouseLeave = () => {
+      setIsHover(false);
+    };
 
     // Login screen HTML
     return(
-      
       <div style={{height:'100%'}} className="" id="loginScreen">
-        <div className="container text-center">
-          
+        <div className="container text-center mb-6" style={{alignContent:'center', gravity:'center', paddingTop:'12%',width:'30%'}}>
+        <h1 style={{padding:'5%'}}>Code Grader 2.0</h1>
+        <Card variant="outlined" className='border border-4 rounded-2' style={{borderColor:'#F58216'}}>
+        <div id="loginForm" className='form-container text-center' style={{ height:'100%', opacity:'100%'}}>
+            <div style={{padding:'7%'}}>
+              <TextField 
+                  style={{width:'100%', background:'white'}}
+                  label="Email"
+                  name="email"
+                  variant="outlined"
+                  value={account.email}
+                  onChange={handleChange}
+                  required
+                />
+            </div>
+            <div id="password" className="mb-3" style={{paddingRight:'7%',paddingLeft:'7%'}}>
+              <TextField
+                  style={{width:'100%', background:'white'}}
+                  label="Password"
+                  name="password"
+                  type="password"
+                  variant="outlined"
+                  value={account.password}
+                  onChange={handleChange}
+                  required
+                />
+            </div>
+            <div className="login-button" style={{paddingBottom: "7%",paddingTop:'3%'}}>
+              <button
+                type="submit"
+                className="btn btn-dark"
+                style={{width:'60%',backgroundColor: isHover ? '#5AAB61' : 'grey'}}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={handleSubmit}
+                >Login</button>
+            </div>
         </div>
- 
-        {/* <form id="loginForm" className='text-center' onSubmit={handleSubmit}> */}
-        <div id="loginForm" className='form-container text-center' style={{ height:'100%', opacity:'90%'}}>
-          <div style={{paddingBottom: "0.5%"}}>
-            <TextField 
-                type="email"
-                style={{width:'50%', background:'white', marginBottom:'20px'}}
-                label="yourname@hhchealth.org"
-                name="email"
-                value={account.email}
-                onChange={handleChange}
-                required
-          />
-            
-              
-          </div>
-          <div id="password" className="mb-3">
-            <TextField
-                style={{width:'50%', background:'white', marginBottom:'20px'}}
-                label="Password"
-                name="password"
-                type="password"
-                value={account.password}
-                onChange={handleChange}
-                required
-              />
-              
-          </div>
-          <div className="login-button" style={{paddingBottom: "0.3%"}}>
-            <button type="submit" onClick={handleSubmit} className="btn btn-success" style={{width:'50%',fontFamily: 'Bitter', background:'#d2492a'}}>Login</button>
-          </div>
-          
-          
-          
+        </Card>
+        </div>
       </div>
-    </div>
   )
 }
 
