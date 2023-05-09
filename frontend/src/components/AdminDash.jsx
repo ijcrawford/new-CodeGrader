@@ -27,13 +27,13 @@ function AdminDash() {
         <h1 style={{padding:'5%'}}>Admin Permissions</h1>
         <div class="card" className="border border-4 rounded-2" style={{width:'100%', justifyContent:'center', padding:'7%', backgroundColor:'white'}}>
           <div class="card-body">
-            <Button class="btn btn-dark" style={{width:'60%',backgroundColor:'grey'}}>Create Professor Account</Button>
+            <button class="btn btn-dark" style={{width:'60%',backgroundColor:'grey'}}>Create Professor Account</button>
           </div>
         </div>
         <div style={{padding:'3%'}}></div>
         <div class="card" className="border border-4 rounded-2" style={{width:'100%', justifyContent:'center', paddingTop:'7%', paddingBottom:'7%', backgroundColor:'white'}}>
           <div class="card-body">
-            <Button class="btn btn-dark" style={{width:'50%',backgroundColor:'grey'}}>Create Student Account</Button>
+            <button class="btn btn-dark" style={{width:'50%',backgroundColor:'grey'}}>Create Student Account</button>
           </div>
         </div>
         </Container>
