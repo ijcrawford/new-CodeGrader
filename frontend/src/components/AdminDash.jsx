@@ -1,46 +1,44 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Container from 'react-bootstrap/Container';
-import {Card} from 'react-bootstrap';
-import { Dropdown, DropdownButton, Button } from 'react-bootstrap';
+import { Navbar, NavDropdown, Nav, Button } from 'react-bootstrap';
 
 
-function adminDash() {
-    
+function AdminDash() {
+  document.body.style.backgroundColor = '#528AAE'
   return(  
     <div>
       <div>
-        
+        <Navbar bg="dark" expand="lg" className="ms-auto" style={{borderBottom:"1px"}}>
+          <Container>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="ms-auto">
+                <NavDropdown title={<i className="bi bi-person-circle" style={{color:'white'}}></i>} id="basic-nav-dropdown">
+                  <NavDropdown.Item href="http://localhost:3000/Login">Logout</NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
       </div>
-
       {/* Header, viewing dashboards */}
-      <div className="container-fluid text-sm-center p-3" style={{fontFamily: 'Bitter'}}>
-            
-          <h3> Welcome!</h3>
-      </div> 
-      <div className="col d-flex justify-content-center">
-        <Container id='clientButtonContainer' fluid>
-
-          {/* Card1: [Submit a Problem, View Pending Intake, [Approved Intake Name]] */}
-          <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'10px', marginTop: '60px',color:'whitesmoke', fontFamily: 'Bitter' }}>
-            <Card.Body>
-              <Card.Title style={{fontSize:'30px'}}>
-                  <Button  variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Create Professor Account</Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-
-          {/* Card2: Completed Courses */}
-          <Card id='card2' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
-            <Card.Body>
-             
-              <Button  variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Create Student Account</Button>
-            </Card.Body>
-          </Card> 
+      <div className="container mb-6 text-center">
+        <Container id='clientButtonContainer' fluid style={{width:'35%', paddingTop:'12%'}}>
+        <h1 style={{padding:'5%'}}>Admin Permissions</h1>
+        <div class="card" className="border border-4 rounded-2" style={{width:'100%', justifyContent:'center', padding:'7%', backgroundColor:'white'}}>
+          <div class="card-body">
+            <Button class="btn btn-dark" style={{width:'60%',backgroundColor:'grey'}}>Create Professor Account</Button>
+          </div>
+        </div>
+        <div style={{padding:'3%'}}></div>
+        <div class="card" className="border border-4 rounded-2" style={{width:'100%', justifyContent:'center', paddingTop:'7%', paddingBottom:'7%', backgroundColor:'white'}}>
+          <div class="card-body">
+            <Button class="btn btn-dark" style={{width:'50%',backgroundColor:'grey'}}>Create Student Account</Button>
+          </div>
+        </div>
         </Container>
       </div>
     </div>
-
   )
 }
-
-export default adminDash;
+export default AdminDash;
